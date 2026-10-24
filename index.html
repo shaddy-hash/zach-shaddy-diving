@@ -54,6 +54,12 @@ button{font:inherit;color:inherit}
 .id{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
 .id h1{font-family:var(--display);font-weight:700;font-size:clamp(2.4rem,6vw,3.6rem);line-height:.95;margin:0;letter-spacing:.01em;text-transform:uppercase}
 .id .sub{color:var(--hero-muted);margin:8px 0 0;font-size:1rem}
+.idr{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.social{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.social a{display:inline-flex;align-items:center;gap:6px;color:var(--hero-ink);text-decoration:none;font-size:.8125rem;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:5px 12px;min-height:32px;background:rgba(255,255,255,.04)}
+.social a:hover{background:rgba(255,255,255,.12)}
+.social .sn{font-weight:600}
+@media (max-width:640px){.idr{align-items:flex-start}.social{justify-content:flex-start}}
 .id .now{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 14px 6px 6px}
 .id .now img{width:34px;height:34px;object-fit:contain;background:#fff;border-radius:50%;padding:3px}
 .id .now span{font-size:.875rem;color:var(--hero-muted)}
@@ -265,7 +271,13 @@ footer p{margin:0 0 6px;max-width:70rem}
         <h1>Zach Shaddy</h1>
         <p class="sub">Diver · Omaha, Nebraska · Creighton Prep → Bellevue West → Virginia Tech → Ball State</p>
       </div>
-      <div class="now"><img src="https://a.espncdn.com/i/teamlogos/ncaa/500/2050.png" alt="" width="34" height="34"><span><b>Ball State University</b>Senior, 2026–27 · one more year of NCAA eligibility</span></div>
+      <div class="idr">
+        <div class="now"><img src="https://a.espncdn.com/i/teamlogos/ncaa/500/2050.png" alt="" width="34" height="34"><span><b>Ball State University</b>Senior, 2026–27 · one more year of NCAA eligibility</span></div>
+        <nav class="social" aria-label="Zach's social media">
+          <a href="https://www.instagram.com/zach.shaddy/" target="_blank" rel="noopener"><span class="sn">Instagram</span> @zach.shaddy <span aria-hidden="true">↗</span></a>
+          <a href="https://www.facebook.com/zach.shaddy.52" target="_blank" rel="noopener"><span class="sn">Facebook</span> zach.shaddy.52 <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
     </div>
     <ol class="path" id="path" aria-label="Teams and coaches"></ol>
     <div class="photos" id="photos" aria-label="Photos over the years"></div>
