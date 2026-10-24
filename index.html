@@ -63,6 +63,16 @@ button{font:inherit;color:inherit}
 .best .k{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--hero-muted)}
 .best .v{font-family:var(--display);font-weight:600;font-size:2.1rem;line-height:1.05}
 .best .w{font-size:.8125rem;color:var(--hero-muted)}
+.path{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.path li{display:flex;gap:9px;align-items:flex-start;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:9px 10px;min-width:0}
+.path li > img{flex:none;background:#fff;border-radius:50%;padding:2px;object-fit:contain}
+.path li > .initials{flex:none}
+.path .pt{font-weight:600;font-size:.875rem;line-height:1.2}
+.path .py{font-size:.75rem;color:var(--hero-muted)}
+.path .pc{font-size:.8125rem;margin-top:3px;line-height:1.25}
+.path .pc span{color:var(--hero-muted)}
+@media (max-width:1100px){.path{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){.path{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .photos{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}
 .photo{flex:0 0 auto;width:150px;scroll-snap-align:start;margin:0}
 .photo .frame{position:relative;width:150px;height:190px;border-radius:var(--r);overflow:hidden;background:rgba(255,255,255,.06)}
@@ -161,6 +171,15 @@ tbody tr.click:focus-visible{outline:2px solid var(--accent);outline-offset:-2px
 
 /* Dive grid */
 .dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:12px}
+.newslist{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.newsseason{font-family:var(--display);font-weight:600;font-size:1.1rem;color:var(--muted);margin:14px 0 6px;letter-spacing:.02em}
+.newsitem{display:grid;grid-template-columns:7.5rem 28px minmax(0,1fr);gap:12px;align-items:start;padding:10px 4px;border-bottom:1px solid var(--line)}
+.newsitem .nd{font-size:.8125rem;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:2px}
+.newsitem a.nt{font-weight:600;color:var(--ink);text-decoration:none}
+.newsitem a.nt:hover{color:var(--accent);text-decoration:underline}
+.newsitem .ns{font-size:.875rem;color:var(--muted);margin-top:2px}
+.newsitem .nsrc{font-size:.75rem;color:var(--faint);margin-top:2px}
+@media (max-width:640px){.newsitem{grid-template-columns:24px minmax(0,1fr)}.newsitem .nd{display:none}}
 .dcard{appearance:none;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 12px 10px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0}
 .dcard:hover{border-color:var(--accent)}
 .dcard .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
@@ -245,10 +264,10 @@ footer p{margin:0 0 6px;max-width:70rem}
       <div>
         <h1>Zach Shaddy</h1>
         <p class="sub">Diver · Omaha, Nebraska · Creighton Prep → Bellevue West → Virginia Tech → Ball State</p>
-        <p class="sub" style="margin-top:2px">Club: Airborne Diving Academy (Omaha, coach Peter Charles) · RipFest (summers, from 2026)</p>
       </div>
       <div class="now"><img src="https://a.espncdn.com/i/teamlogos/ncaa/500/2050.png" alt="" width="34" height="34"><span><b>Ball State University</b>Senior, 2026–27 · one more year of NCAA eligibility</span></div>
     </div>
+    <ol class="path" id="path" aria-label="Teams and coaches"></ol>
     <div class="photos" id="photos" aria-label="Photos over the years"></div>
     <div class="bests" id="bests" aria-label="Career-best rounds"></div>
   </div>
@@ -335,6 +354,13 @@ footer p{margin:0 0 6px;max-width:70rem}
     </div>
   </section>
 
+  <section class="panel" id="p-news" role="tabpanel" aria-labelledby="t-news" hidden>
+    <div class="card">
+      <h2>In the news</h2>
+      <p class="note">Every diving story found that mentions him, newest first. The Team filter above applies. Each line under a headline summarizes his part in the story.</p>
+      <div id="news"></div>
+    </div>
+  </section>
   <section class="panel" id="p-rounds" role="tabpanel" aria-labelledby="t-rounds" hidden>
     <div class="card">
       <h2>All rounds</h2>
@@ -377,7 +403,7 @@ const EVENTS = ['1M', '3M', 'Platform', 'Synchro 3M', 'HS 1M (11 dives)', 'HS 1M
 const EVC = { '1M': 'var(--e1)', '3M': 'var(--e2)', 'Platform': 'var(--e3)', 'Synchro 3M': 'var(--e4)', 'HS 1M (11 dives)': 'var(--e5)', 'HS 1M dual (6 dives)': 'var(--e6)' };
 const SIX = ['1M', '3M', 'Platform', 'Synchro 3M'];
 const PHOTOS = [
-  { nopic: true, logos: ['Creighton Prep', 'Bellevue West', 'Airborne Diving Academy'], t: 'High school', s: 'Creighton Prep 2019–20, Bellevue West 2021–23; club diving with Airborne Diving Academy under Peter Charles', note: 'No public photos found' },
+  { nopic: true, logos: ['Creighton Prep', 'Bellevue West', 'Airborne Diving Academy'], t: 'High school', s: 'Creighton Prep, Bellevue West and Airborne Diving Academy', note: 'No public photos found' },
   { src: 'https://storage.googleapis.com/virginiatech-prod/2024/02/05/xCV9QfXnABhv24AtvZz6HyggK2ZwXFIEp6pS4xsY.jpg', team: 'Virginia Tech', t: 'Virginia Tech', s: '2023–25' },
   { src: 'https://dxbhsrqyrr690.cloudfront.net/sidearm.nextgen.sites/bsu.sidearmsports.com/images/2025/10/9/Shaddy_Zach.png', team: 'Ball State', t: 'Ball State', s: '2025–26 roster' },
   { src: 'https://dxbhsrqyrr690.cloudfront.net/sidearm.nextgen.sites/bsu.sidearmsports.com/images/2026/2/25/IMG_8447.png', team: 'Ball State', t: 'MVC 1M champion', s: 'Feb 2026, 360.15', pos: '30% 30%' },
@@ -385,6 +411,15 @@ const PHOTOS = [
   { src: 'https://dxbhsrqyrr690.cloudfront.net/sidearm.nextgen.sites/bsu.sidearmsports.com/images/2026/10/1/Shaddy__Zach.png', team: 'Ball State', t: 'Ball State', s: '2026–27 roster' }
 ];
 
+const PATH = [
+  { team: 'Creighton Prep', yrs: 'High school, 2019–20', coach: 'Tom Beck', role: 'head coach' },
+  { team: 'Airborne Diving Academy', name: 'Airborne Diving Academy', yrs: 'Omaha club, three seasons', coach: 'Peter Charles', role: 'coach' },
+  { team: 'Bellevue West', yrs: 'High school, 2020–23', coach: 'Peter Charles', role: 'diving coach' },
+  { team: 'Virginia Tech', yrs: 'NCAA, 2023–25', coach: 'Ryan Hawkins', role: 'diving coach' },
+  { team: 'Ball State', yrs: 'NCAA, 2025–present', coach: 'Brendon Stevens', role: 'diving coach' },
+  { team: 'RipFest', yrs: 'Summer club, 2026–', coach: 'John Wingfield', role: 'coach' }
+];
+const NEWS = [{"date": "2026-10-22", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's S&D Fall to Jaguars in Season Opener", "url": "https://ballstatesports.com/news/2026/10/22/mens-swimming-and-diving-mens-s-d-fall-to-jaguars-in-season-opener", "sum": "Season opener at IU Indy. He won the 1M (347.85) and was 2nd on 3M (336.30)."}, {"date": "2026-10-21", "team": "Ball State", "src": "Ball State Athletics", "title": "Swimming & Diving Opens 2026-27 Campaign This Week at IU Indy and Indiana Intercollegiates", "url": "https://ballstatesports.com/news/2026/10/21/mens-swimming-and-diving-swimming-diving-opens-2026-27-campaign-this-week-at-iu-indy-and-indiana-intercollegiates", "sum": "Season preview for his senior year."}, {"date": "2026-03-10", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's Diving Finish Competition at 2026 Zone C Championships", "url": "https://ballstatesports.com/news/2026/3/10/mens-swimming-and-diving-mens-diving-finish-competition-at-2026-zone-c-championships", "sum": "NCAA Zone C: 14th on 3M (334.70 in the final round), 16th on 1M (337.40)."}, {"date": "2026-03-06", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's Diving Prepared for Zone Diving Championships in Ypsilanti", "url": "https://ballstatesports.com/news/2026/3/6/mens-swimming-and-diving-mens-diving-prepared-for-zone-diving-championships-in-ypsilanti", "sum": "Preview of the NCAA Zone C Diving Championships."}, {"date": "2026-03-01", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's S&D Claim Relay Medal to Close MVC Championships", "url": "https://ballstatesports.com/news/2026/3/1/mens-swimming-and-diving-mens-s-d-claim-relay-medal-to-close-mvc-championships", "sum": "Wrap-up of the Missouri Valley Conference Championships."}, {"date": "2026-02-27", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's S&D Continues Strong Showing on Day Three of MVC Championships", "url": "https://ballstatesports.com/news/2026/2/27/mens-swimming-and-diving-mens-s-d-continues-strong-showing-on-day-four-of-mvc-championships", "sum": "MVC 3M: silver with 365.70, a Ball State record."}, {"date": "2026-02-25", "team": "Ball State", "src": "Ball State Athletics", "title": "Shaddy's Gold Leads Men's S&D on Day One of MVC Championships", "url": "https://ballstatesports.com/news/2026/2/25/mens-swimming-and-diving-shaddys-gold-leads-mens-s-d-on-day-one-of-mvc-championships", "sum": "MVC 1M champion with 360.15, a conference and Ball State record."}, {"date": "2026-02-23", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's S&D Ready for MVC Championships in Evansville", "url": "https://ballstatesports.com/news/2026/2/23/mens-swimming-and-diving-mens-s-d-ready-for-mvc-championships-in-evansville", "sum": "Preview of the Missouri Valley Conference Championships."}, {"date": "2026-02-07", "team": "Ball State", "src": "Ball State Athletics", "title": "Diving Shows Strong Effort at Miami Invite", "url": "https://ballstatesports.com/news/2026/2/7/mens-swimming-and-diving-diving-shows-strong-effort-at-miami-invite", "sum": "Miami (Ohio) Invitational: 4th on 1M (287.70), 5th on 3M (297.00)."}, {"date": "2026-02-06", "team": "Ball State", "src": "Ball State Athletics", "title": "Diving Squads Make Final Stop Before Conference at Miami (OH) Saturday", "url": "https://ballstatesports.com/news/2026/2/6/mens-swimming-and-diving-diving-squads-make-final-stop-at-miami-oh-saturday", "sum": "Preview; notes he leads the team on both boards and has NCAA Zone qualifying marks."}, {"date": "2026-01-30", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's S&D Finishes Regular Season at Butler Invite This Weekend", "url": "https://ballstatesports.com/news/2026/1/30/mens-swimming-and-diving-mens-s-d-finishes-regular-season-at-butler-invite-this-weekend", "sum": "Regular-season finale preview."}, {"date": "2026-01-23", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's S&D Show a Strong Performance Versus the Jaguars", "url": "https://ballstatesports.com/news/2026/1/23/mens-swimming-and-diving-mens-s-d-show-a-strong-performance-versus-the-jaguars", "sum": "Dual meet with IU Indy: 2nd on 1M and 3M (358.05)."}, {"date": "2026-01-22", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's S&D Battles IU Indy for Senior Day", "url": "https://ballstatesports.com/news/2026/1/22/mens-swimming-and-diving-mens-s-d-battles-iu-indy-for-senior-day", "sum": "Meet preview."}, {"date": "2026-01-16", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's S&D Fall to the RedHawks", "url": "https://ballstatesports.com/news/2026/1/16/mens-swimming-and-diving-mens-s-d-fall-to-the-redhawks", "sum": "Tri-meet at Miami (Ohio): won the 1M (316.30) and 3M (321.15)."}, {"date": "2026-01-15", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's S&D Begins 2026 with Action at Miami", "url": "https://ballstatesports.com/news/2026/1/15/mens-swimming-and-diving-mens-s-d-begins-2026-with-action-at-miami", "sum": "Meet preview."}, {"date": "2025-11-22", "team": "Ball State", "src": "Ball State Athletics", "title": "Men's S&D Conclude Day Three at House of Champions", "url": "https://ballstatesports.com/news/2025/11/22/mens-swimming-and-diving-mens-s-d-conclude-day-three-at-house-of-champions", "sum": "House of Champions Invitational, final day. His 3M consolation final: 352.20, 1st."}, {"date": "2025-11-21", "team": "Ball State", "src": "Ball State Athletics", "title": "Patterson Leads Men's S&D During Day Two at House of Champions", "url": "https://ballstatesports.com/news/2025/11/21/mens-swimming-and-diving-patterson-leads-mens-s-d-during-day-two-at-house-of-champions", "sum": "House of Champions Invitational, day two. He placed 3rd on 1M (339.70) and platform (275.95) at the meet."}, {"date": "2025-02-09", "team": "Virginia Tech", "src": "Virginia Tech Athletics", "title": "Hokies host Virginia Tech Invitational", "url": "https://hokiesports.com/news/2025/02/9/virginia-tech-swim-dive-hokies-host-virginia-tech-invitational", "sum": "Home invitational: 1M final 294.95, 3M final 310.75."}, {"date": "2024-11-02", "team": "Virginia Tech", "src": "Virginia Tech Athletics", "title": "Hokies fall to Ohio State Buckeyes at home", "url": "https://hokiesports.com/news/2024/11/2/hokie-swim-dive-hokies-fall-to-ohio-state-buckeyes-at-home", "sum": "3rd on 3M (366.08), 5th on 1M (327.98)."}, {"date": "2024-09-28", "team": "Virginia Tech", "src": "Virginia Tech Athletics", "title": "Hokies sweep George Washington in season opener", "url": "https://hokiesports.com/news/2024/09/28/virginia-tech-swim-dive-hokies-sweep-george-washington-in-season-opener", "sum": "Season opener: 2nd on 1M (312.83)."}, {"date": "2024-02-25", "team": "Virginia Tech", "src": "Virginia Tech Athletics", "title": "Hokies earn 15 medals at ACC Championships", "url": "https://hokiesports.com/news/2024/02/25/hokies-earn-15-medals-at-acc-championships", "sum": "ACC Championships as a freshman: 1M, 3M and platform prelims."}, {"date": "2022-02-24", "team": "Bellevue West", "src": "Omaha World-Herald", "title": "Omaha Creighton Prep's Paul Mathews wins Nebraska state boys diving title", "url": "https://omaha.com/sports/high-school/omaha-creighton-preps-paul-mathews-wins-nebraska-state-boys-diving-title/article_a2d75b3c-95c4-11ec-852f-0b84a62ded7a.html", "sum": "NSAA state diving photo gallery, with several photos of him competing for Bellevue West. He placed 4th (444.35)."}];
 // ---------- data ----------
 const parse = d3.utcParse('%Y-%m-%d');
 const fmtD = d3.utcFormat('%b %-d, %Y');
@@ -463,6 +498,7 @@ function table(host, cols, rows, opt) {
 
 // ---------- hero ----------
 function hero() {
+  document.getElementById('path').replaceChildren(...PATH.map(p => h('li', null, logo(p.team, 30), h('div', { style: 'min-width:0' }, h('div', { class: 'pt', text: p.name || p.team }), h('div', { class: 'py', text: p.yrs }), h('div', { class: 'pc' }, h('span', { text: p.role[0].toUpperCase() + p.role.slice(1) + ': ' }), p.coach)))));
   document.getElementById('photos').replaceChildren(...PHOTOS.map(p => p.nopic
     ? h('figure', { class: 'photo nopic' }, h('div', { class: 'frame' }, h('div', { style: 'display:flex;gap:6px' }, p.logos.map(t => logo(t, 40))), h('span', { text: p.note })), h('figcaption', null, h('b', { text: p.t }), p.s))
     : h('figure', { class: 'photo' + (p.wide ? ' wide' : '') }, h('div', { class: 'frame' }, h('img', { class: 'pic', src: p.src, alt: 'Zach Shaddy, ' + p.t + ', ' + p.s, loading: 'lazy', style: p.pos ? 'object-position:' + p.pos : null }), h('img', { class: 'badge', src: TEAMS[p.team].logo, alt: '' })), h('figcaption', null, h('b', { text: p.t }), p.s))));
@@ -474,7 +510,7 @@ function hero() {
 }
 
 // ---------- tabs ----------
-const TABS = [['overview', 'Overview'], ['meets', 'Meets'], ['dives', 'Dives'], ['rounds', 'All rounds']];
+const TABS = [['overview', 'Overview'], ['meets', 'Meets'], ['dives', 'Dives'], ['rounds', 'All rounds'], ['news', 'News']];
 function setTab(t, push) {
   S.tab = t;
   document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.t === t)));
@@ -701,6 +737,23 @@ function divesView(rs) {
   }
 }
 
+// ---------- news ----------
+function newsView() {
+  const host = document.getElementById('news');
+  const items = NEWS.filter(n => S.teams.has(n.team) && (S.season === 'all' || seasonOf(n.date) === S.season)).sort((a, b) => b.date.localeCompare(a.date));
+  host.replaceChildren();
+  if (!items.length) { host.append(h('div', { class: 'empty', text: 'No stories match these filters.' })); return; }
+  let cur = null, list = null;
+  for (const n of items) {
+    const se = seasonOf(n.date);
+    if (se !== cur) { cur = se; host.append(h('div', { class: 'newsseason', text: se.replace('-', '–') + ' season' })); list = h('ul', { class: 'newslist' }); host.append(list); }
+    const d = parse(n.date);
+    list.append(h('li', { class: 'newsitem' }, h('div', { class: 'nd', text: fmtD(d) }), logo(n.team, 26),
+      h('div', null, h('a', { class: 'nt', href: n.url, target: '_blank', rel: 'noopener', text: n.title }), h('div', { class: 'ns', text: n.sum }), h('div', { class: 'nsrc', text: n.src + (narrow() ? ' · ' + fmtD(d) : '') }))));
+  }
+}
+const seasonOf = dt => { const y = +dt.slice(0, 4), m = +dt.slice(5, 7), a = m >= 7 ? y : y - 1; return a + '-' + String(a + 1).slice(2); };
+
 // ---------- rounds ----------
 function roundsTable(rs) {
   const q = document.getElementById('rounds-q').value.trim().toLowerCase();
@@ -798,6 +851,7 @@ function counts(rs) {
   document.getElementById('ct-meets').textContent = meets;
   document.getElementById('ct-dives').textContent = dives;
   document.getElementById('ct-rounds').textContent = rs.length;
+  document.getElementById('ct-news').textContent = NEWS.filter(n => S.teams.has(n.team) && (S.season === 'all' || seasonOf(n.date) === S.season)).length;
   document.getElementById('fsum').textContent = isDefault() ? `All ${rs.length} rounds` : `Showing ${rs.length} of ${ROUNDS.length} rounds`;
 }
 function render() {
@@ -807,6 +861,7 @@ function render() {
   if (S.tab === 'meets') meetsTable(rs);
   if (S.tab === 'dives') divesView(rs);
   if (S.tab === 'rounds') roundsTable(rs);
+  if (S.tab === 'news') newsView();
 }
 
 hero(); tabs(); filters(); syncFilters();
