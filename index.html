@@ -374,7 +374,7 @@ footer p{margin:0 0 6px;max-width:70rem}
   <section class="panel" id="p-news" role="tabpanel" aria-labelledby="t-news" hidden>
     <div class="card">
       <h2>In the news</h2>
-      <p class="note">Every diving story found that mentions him, oldest first. The Team filter above applies. Each line under a headline summarizes his part in the story.</p>
+      <p class="note">Every diving story found that mentions him, newest first. The Team filter above applies. Each line under a headline summarizes his part in the story.</p>
       <div id="news"></div>
     </div>
   </section>
@@ -760,7 +760,7 @@ function divesView(rs) {
 // ---------- news ----------
 function newsView() {
   const host = document.getElementById('news');
-  const items = NEWS.filter(n => S.teams.has(n.team) && (S.season === 'all' || seasonOf(n.date) === S.season)).sort((a, b) => a.date.localeCompare(b.date));
+  const items = NEWS.filter(n => S.teams.has(n.team) && (S.season === 'all' || seasonOf(n.date) === S.season)).sort((a, b) => b.date.localeCompare(a.date));
   host.replaceChildren();
   if (!items.length) { host.append(h('div', { class: 'empty', text: 'No stories match these filters.' })); return; }
   let cur = null, list = null;
