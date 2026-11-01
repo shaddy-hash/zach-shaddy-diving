@@ -519,7 +519,7 @@ function table(host, cols, rows, opt) {
 // ---------- hero ----------
 function hero() {
   document.getElementById('path').replaceChildren(...PATH.map(p => h('li', null, logo(p.team, 30), h('div', { style: 'min-width:0' }, h('div', { class: 'pt', text: p.name || p.team }), h('div', { class: 'py', text: p.yrs }), h('div', { class: 'pc' }, h('span', { text: p.role + ': ' }), p.coaches.flatMap(([n, u], i) => [i ? ', then ' : '', u ? h('a', { href: u, target: '_blank', rel: 'noopener', text: n }) : n]))))));
-  document.getElementById('photos').replaceChildren(...PHOTOS.map(p => p.nopic
+  document.getElementById('photos').replaceChildren(...PHOTOS.slice().reverse().map(p => p.nopic
     ? h('figure', { class: 'photo nopic' }, h('div', { class: 'frame' }, h('div', { style: 'display:flex;gap:6px' }, p.logos.map(t => logo(t, 40))), h('span', { text: p.note })), h('figcaption', null, h('b', { text: p.t }), p.s))
     : h('figure', { class: 'photo' + (p.wide ? ' wide' : '') }, h(p.href ? 'a' : 'div', { class: 'frame', href: p.href || null, target: p.href ? '_blank' : null, rel: p.href ? 'noopener' : null }, h('img', { class: 'pic', src: p.src, alt: 'Zach Shaddy, ' + p.t + ', ' + p.s, loading: 'lazy', referrerpolicy: 'no-referrer', style: p.pos ? 'object-position:' + p.pos : null }), logo(p.team, 34)), h('figcaption', null, h('b', { text: p.t }), p.s, p.credit ? h('span', { class: 'cr', text: 'Photo: ' + p.credit }) : null))));
   const best = ev => ROUNDS.filter(r => r.event === ev).reduce((a, b) => b.score > a.score ? b : a);
